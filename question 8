@@ -1,0 +1,38 @@
+import pandas as pd
+from sklearn.model_selection import KFold, cross_val_score
+from sklearn.linear_model import Ridge
+
+# Load dataset
+df = pd.read_csv("dataset.csv")
+
+# Features and target
+X = df.drop("target", axis=1)
+y = df["target"]
+
+# Ridge Regression
+model = Ridge(alpha=1.0)
+
+# 5-fold cross-validation
+kf = KFold(
+    n_splits=5,
+    shuffle=True,
+    random_state=42
+)
+
+# Calculate scores
+scores = cross_val_score(
+    model,
+    X,
+    y,
+    cv=kf,
+    scoring="neg_mean_squared_error"
+)
+
+# Convert negative MSE to positive MSE
+mse_scores = -scores
+
+print("MSE for each fold:")
+print(mse_scores)
+
+print("Mean MSE:", mse_scores.mean())
+print("Standard Deviation:", mse_scores.std())
