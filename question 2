@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+def plot_outliers(df, column_name):
+    # Create figure with two plots
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+    # Boxplot
+    sns.boxplot(y=df[column_name], ax=axes[0])
+    axes[0].set_title("Boxplot of " + column_name)
+
+    # Scatter plot
+    axes[1].scatter(range(len(df)), df[column_name])
+    axes[1].set_xlabel("Index")
+    axes[1].set_ylabel(column_name)
+    axes[1].set_title("Scatter Plot of " + column_name)
+
+    plt.tight_layout()
+    plt.show()
+
+
+# Example
+df = pd.read_csv("dataset.csv")
+plot_outliers(df, "Age")
